@@ -1,0 +1,16 @@
+.icon_gz, .icon_jp {
+  position: absolute;
+  right: 0px;
+  width: 12%;
+}
+
+@mixin fixedCenter {
+  position: absolute;
+  margin: 0 auto;
+  left: 0;
+  right: 0;
+}
+
+p {
+  margin: 0;
+}

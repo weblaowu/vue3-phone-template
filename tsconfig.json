@@ -1,0 +1,36 @@
+{
+	"compilerOptions": {
+		"target": "esnext",
+		"useDefineForClassFields": true,
+		"module": "esnext",
+		"moduleResolution": "node",
+		"strict": true,
+		"jsx": "preserve",
+		"sourceMap": true,
+		"resolveJsonModule": true,
+		"isolatedModules": false,
+		"esModuleInterop": true,
+		"lib": ["esnext", "dom"],
+		"skipLibCheck": true,
+		"baseUrl": "./",
+		"allowJs": true,
+		"paths": {
+			"@": ["src/*"],
+			"@/*": ["src/*"],
+			"@api/*": ["src/api/*"],
+			"@store/*": ["src/store/*"],
+			"@assets/*": ["src/assets/*"],
+			"@tools/*": ["src/tools/*"],
+			"@views/*": ["src/views/*"],
+			"@use/*": ["src/use/*"]
+		}
+	},
+	"include": [
+		"src/**/*.ts",
+		"src/**/*.d.ts",
+		"src/**/*.tsx",
+		"src/**/*.vue",
+		"./auto-imports.d.ts",
+		"src/use/useTools.js"
+	]
+}
