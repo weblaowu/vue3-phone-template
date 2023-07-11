@@ -7,7 +7,7 @@
 </template>
 
 <script setup>
-import { animateCSS } from '@/tools/utils/index'
+import { animateCSS } from '@utils/animate'
 
 defineOptions({
 	name: 'SecondWrap',

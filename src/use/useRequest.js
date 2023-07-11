@@ -1,36 +1,34 @@
-import { mergeData, isFunction } from '@/tools/utils/index.js'
+import { mergeData } from '@/utils/data.js'
+import { isFunction } from '@/utils/type.js'
+
 // 默认的配置项
 const defaultConfig = {
-	loadingDelay: 500, // loading 延迟时间
+	loadingDelay: 300, // loading 延迟时间
 	loadingKeep: 300, // loading 保持时间
 	initialData: [], // data 数据格式
 	immediate: false, // 是否立即发起请求
 }
 
 /**
- * 基于 axios 的 request hook
- * @param {Promise} promiseData promise对象
- * @param {Object} param1 参数对象
- * @param {Object} param1.params 请求入参
- * @param {Function} param1.onSuccess 请求成功的回调
- * @param {Object} param1.options 初始化配置参数
- * @returns {Object} 对象
+ * request usehook 封装
+ * @param {function} promiseData api请求，返回promise对象
+ * @param {object} options 请求的选项
+ * @param {function} options.onSuccess 请求成功的回调方法
+ * @param {object} options.params 请求的参数
+ * @param {object} options.option 配置项
+ * @returns {} data loading error run
  */
-const useRequest = (
-	promiseData,
-	{ onSuccess, params: outParams, ...options } = {}
-) => {
+const useRequest = (promiseData, options) => {
+	const { onSuccess, params: outParams, ...option } = options || {}
 	if (!isFunction(promiseData)) {
 		throw new Error('useRequest第一个参数必须是函数并且它返回一个promise对象')
 	}
-	const paramsRef = unref(outParams)
-	// console.log('paramsRef: ', { ...paramsRef })
 	// 执行 loading 的定时器
 	let temp = { timerLoad: null, finallyDelay: 0 }
 	// 合并传入的自定义参数
 	const { loadingDelay, loadingKeep, immediate, initialData } = mergeData(
 		defaultConfig,
-		options
+		option
 	)
 	// 返回的 data
 	const data = ref(initialData)
@@ -41,7 +39,7 @@ const useRequest = (
 		handleLoading(loading, loadingDelay, temp)
 		const startDate = new Date().getTime()
 		// params 是执行 run 方法传入的请求参数
-		const params = { ...paramsRef, ...inParams }
+		const params = { ...outParams, ...inParams }
 		return promiseData(params)
 			.then((res) => {
 				// 取消loading
@@ -49,7 +47,9 @@ const useRequest = (
 				// 处理数据
 				const success = onSuccess || runSuccess
 				data.value = success ? success(res.data) : res.data
-				return res
+				const { code, message } = res
+				// 返回处理过的数据格式
+				return { code, message, data: data.value }
 			})
 			.catch((err) => {
 				cancelLoading(startDate, loadingDelay, loadingKeep, temp)

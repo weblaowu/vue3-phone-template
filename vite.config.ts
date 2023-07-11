@@ -48,10 +48,12 @@ export default defineConfig(({ mode }) => {
 			alias: {
 				'@': path.resolve(__dirname, 'src'),
 				'@api': path.resolve(__dirname, 'src/api'),
-				'@tools': path.resolve(__dirname, 'src/tools'),
+				'@utils': path.resolve(__dirname, 'src/utils'),
+				'@store': path.resolve(__dirname, 'src/store'),
 				'@assets': path.resolve(__dirname, 'src/assets'),
 				'@views': path.resolve(__dirname, 'src/views'),
 				'@use': path.resolve(__dirname, 'src/use'),
+				'@components': path.resolve(__dirname, 'src/components'),
 			},
 		},
 		css: {

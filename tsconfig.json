@@ -20,9 +20,10 @@
 			"@api/*": ["src/api/*"],
 			"@store/*": ["src/store/*"],
 			"@assets/*": ["src/assets/*"],
-			"@tools/*": ["src/tools/*"],
+			"@utils/*": ["src/utils/*"],
 			"@views/*": ["src/views/*"],
-			"@use/*": ["src/use/*"]
+			"@use/*": ["src/use/*"],
+			"@components/*": ["src/components/*"]
 		}
 	},
 	"include": [

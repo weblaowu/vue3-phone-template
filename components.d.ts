@@ -5,6 +5,15 @@ import '@vue/runtime-core'
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
+    Empty: typeof import('./src/components/Empty/index.vue')['default']
+    NoPromission: typeof import('./src/components/NoPromission.vue')['default']
+    RouterLink: typeof import('vue-router')['RouterLink']
+    RouterView: typeof import('vue-router')['RouterView']
+    SecondWrap: typeof import('./src/components/SecondWrap/index.vue')['default']
+    Skeleton: typeof import('./src/components/Skeleton/index.vue')['default']
+    VanLoading: typeof import('vant/es')['Loading']
+    VanOverlay: typeof import('vant/es')['Overlay']
+    VanSkeleton: typeof import('vant/es')['Skeleton']
   }
 }
 
