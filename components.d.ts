@@ -6,11 +6,17 @@ import '@vue/runtime-core'
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
     Empty: typeof import('./src/components/Empty/index.vue')['default']
+    FormWrap: typeof import('./src/components/FormWrap/index.vue')['default']
     NoPromission: typeof import('./src/components/NoPromission.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     SecondWrap: typeof import('./src/components/SecondWrap/index.vue')['default']
+    SendCode: typeof import('./src/components/SendCode/index.vue')['default']
     Skeleton: typeof import('./src/components/Skeleton/index.vue')['default']
+    VanButton: typeof import('vant/es')['Button']
+    VanCellGroup: typeof import('vant/es')['CellGroup']
+    VanField: typeof import('vant/es')['Field']
+    VanForm: typeof import('vant/es')['Form']
     VanLoading: typeof import('vant/es')['Loading']
     VanOverlay: typeof import('vant/es')['Overlay']
     VanSkeleton: typeof import('vant/es')['Skeleton']
