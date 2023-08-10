@@ -15,20 +15,20 @@ const defaultConfig = {
  * @param {object} options 请求的选项
  * @param {function} options.onSuccess 请求成功的回调方法
  * @param {object} options.params 请求的参数
- * @param {object} options.option 配置项
+ * @param {object} options.config 配置项，覆盖默认配置 defaultConfig
  * @returns {} data loading error run
  */
 const useRequest = (promiseData, options) => {
-	const { onSuccess, params: outParams, ...option } = options || {}
+	const { onSuccess, params: outParams, ...config } = options || {}
 	if (!isFunction(promiseData)) {
 		throw new Error('useRequest第一个参数必须是函数并且它返回一个promise对象')
 	}
 	// 执行 loading 的定时器
 	let temp = { timerLoad: null, finallyDelay: 0 }
-	// 合并传入的自定义参数
+	// 合并配置项
 	const { loadingDelay, loadingKeep, immediate, initialData } = mergeData(
 		defaultConfig,
-		option
+		config
 	)
 	// 返回的 data
 	const data = ref(initialData)

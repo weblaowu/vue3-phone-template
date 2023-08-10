@@ -63,8 +63,8 @@ export async function getImgPx(file) {
 /**
  * 图片压缩
  * @param {Object} file 图片文件对象
- * @param {number} szie 图片压缩大小
- * @param {number} quality 图片压缩质量：0 ~ 1之间
+ * @param {number} szie 图片压缩大小，单位 b；比如 10kb = 10 * 1024b
+ * @param {number} quality 图片压缩质量：0 ~ 1 之间
  */
 export function compressImage(file, size, quality = 0.8) {
 	const { size: originSize } = file
@@ -76,27 +76,22 @@ export function compressImage(file, size, quality = 0.8) {
 			img.src = blob
 			img.onload = function () {
 				// 图片最大宽高
-				const maxWidth = 1000
+				const maxWidth = 1200
 				// 绘制canvas画布
 				const canvas = document.createElement('canvas')
 				const ctx = canvas.getContext('2d')
-				const imgWidth = this.width
-				const imgHeight = this.height
+				const imgWidth = img.width
+				const imgHeight = img.height
 				if (Math.max(imgWidth, imgHeight) > maxWidth) {
-					if (imgWidth > imgHeight) {
-						canvas.width = maxWidth
-						canvas.height = (10 * imgHeight) / imgWidth
-					} else {
-						canvas.height = maxWidth
-						canvas.width = (maxWidth * imgWidth) / imgHeight
-					}
+					canvas.width = maxWidth
+					canvas.height = (imgHeight * maxWidth) / imgWidth
 				} else {
 					canvas.width = imgWidth
 					canvas.height = imgHeight
-					quality = 0.6
+					quality = 0.8
 				}
 				ctx.clearRect(0, 0, canvas.width, canvas.height)
-				ctx.drawImage(this, 0, 0, this.width, this.height)
+				ctx.drawImage(img, 0, 0, canvas.width, canvas.height)
 				// 转成base64
 				const base64 = canvas.toDataURL('image/jpeg', quality)
 				if (base64) {
