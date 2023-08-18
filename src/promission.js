@@ -5,7 +5,7 @@ import 'vant/es/toast/style'
 
 // 重定向获取code
 const goToWxAuthorizeUrl = () => {
-	const appid = 'wx5e27cbdd9d88764c'
+	const appid = '123456'
 	const path = location.href.split('?')
 	const url = path[0] || ''
 	location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appid}&redirect_uri=${encodeURIComponent(
@@ -40,7 +40,7 @@ router.beforeEach((to, _, next) => {
 	const sessionCode = sessionStorage.getItem('code')
 	// 如果 sessionCode 存在，表示已经经过微信授权，获取到了code
 	if (sessionCode) return next()
-	const code = import.meta.env.MODE === 'production' ? to.query.code : ''
+	const code = import.meta.env.MODE === 'production' ? to.query.code : '123'
 	authorizeAndTrack(
 		code,
 		(code, openId) => {
