@@ -1,9 +1,9 @@
 import { createRouter, createWebHistory } from 'vue-router'
 
-const isProd = import.meta.env.PROD
+const baseUrl = import.meta.env.VITE_APP_BASE_URL
 
 const router = createRouter({
-	history: createWebHistory(isProd ? '/qxb/marketing-material' : '/'),
+	history: createWebHistory(baseUrl),
 	routes: [
 		{
 			path: '/',

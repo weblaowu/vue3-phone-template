@@ -8,9 +8,10 @@ import vue from '@vitejs/plugin-vue'
 
 export default defineConfig(({ mode }) => {
 	// vite 中获取环境变量
-	const isProd = loadEnv(mode, process.cwd()).VITE_NODE_ENV === 'production'
+	const isProduct = mode === 'production'
+	const baseUrl = loadEnv(mode, process.cwd()).VITE_APP_BASE_URL
 	return {
-		base: isProd ? '/qxb/marketing-material' : '/',
+		base: baseUrl,
 		server: {
 			host: '0.0.0.0',
 			port: 8888,
@@ -25,7 +26,7 @@ export default defineConfig(({ mode }) => {
 			},
 		},
 		esbuild: {
-			// drop: ['console', 'debugger'],
+			drop: isProduct ? ['console', 'debugger'] : [],
 		},
 		build: {
 			minify: 'esbuild',

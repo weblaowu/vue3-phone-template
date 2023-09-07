@@ -8,7 +8,7 @@ const source = CancelToken.source()
 
 // 创建axios实例
 const instance = axios.create({
-	baseURL: import.meta.env.VITE_APP_BASE_URL,
+	baseURL: import.meta.env.VITE_API_BASE_URL,
 	headers: {
 		'Content-Type': 'application/json',
 	},
