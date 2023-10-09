@@ -6,15 +6,14 @@ import 'vant/es/toast/style'
 // 重定向获取code
 const goToWxAuthorizeUrl = () => {
 	const appid = '123456'
-	const path = location.href.split('?')
-	const url = path[0] || ''
+	const path = location.href.split('#')[0]
 	location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appid}&redirect_uri=${encodeURIComponent(
-		url
+		path
 	)}&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect`
 }
 
 // 进入鉴权
-export const authorizeAndTrack = (code, callback, next) => {
+export const authorizeAndTrack = (code, next, cb) => {
 	if (!code) {
 		goToWxAuthorizeUrl()
 	} else {
@@ -28,7 +27,7 @@ export const authorizeAndTrack = (code, callback, next) => {
 			}
 			const { openId } = data
 			if (!openId) return showFailToast('没有获取到openId')
-			callback && callback(code, openId)
+			cb && cb(code, openId)
 		})
 	}
 }
@@ -41,14 +40,10 @@ router.beforeEach((to, _, next) => {
 	// 如果 sessionCode 存在，表示已经经过微信授权，获取到了code
 	if (sessionCode) return next()
 	const code = import.meta.env.MODE === 'production' ? to.query.code : '123'
-	authorizeAndTrack(
-		code,
-		(code, openId) => {
-			cacheCode(code, openId)
-			next()
-		},
-		next
-	)
+	authorizeAndTrack(code, next, (code, openId) => {
+		cacheCode(code, openId)
+		next()
+	})
 })
 
 // 缓存code和openid
