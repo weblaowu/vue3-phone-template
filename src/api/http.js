@@ -1,6 +1,5 @@
 import axios from 'axios'
 import { showToast } from 'vant'
-import 'vant/es/toast/style'
 
 // 请求取消
 const CancelToken = axios.CancelToken
@@ -15,7 +14,6 @@ const instance = axios.create({
 	timeout: 20000,
 	// 取消请求（比如你进入某个路由后，可能就停在了这个页面就1s时间， 就立马进入了下个路由，这时，前边这个路由的请求就可以取消掉了）
 	cancelToken: source.token,
-	// withCredentials: true,
 })
 
 /** 添加请求拦截器 * */

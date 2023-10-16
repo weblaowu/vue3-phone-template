@@ -13,6 +13,10 @@
 </template>
 
 <script setup>
+defineOptions({
+	name: 'Empty',
+})
+
 defineProps({
 	width: {
 		type: [String, Number],

@@ -11,7 +11,7 @@
 		<van-loading color="#333" size="20px" vertical />
 	</van-overlay>
 </template>
-<script setup>
+<script setup lang="ts">
 import { useLoad } from '@/store/loading'
 import { setToastDefaultOptions } from 'vant'
 setToastDefaultOptions({ duration: 2000 })

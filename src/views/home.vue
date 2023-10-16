@@ -1,5 +1,5 @@
 <template>
-	<form-wrap :data="formData" :groups="fields1"></form-wrap>
+	<form-wrap :data="formData" :groups="groups"></form-wrap>
 </template>
 
 <script setup>
