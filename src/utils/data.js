@@ -1,12 +1,12 @@
 // 根据 items 生成 maps
 export function generateMaps(items, type = 'name', params = {}) {
-	const map = { ...params }
-	items.forEach((item) => {
-		if (map[item[type]] !== undefined) {
-			map[item[type]] = ''
-		}
-	})
-	return map
+  const map = { ...params }
+  items.forEach((item) => {
+    if (map[item[type]] !== undefined) {
+      map[item[type]] = ''
+    }
+  })
+  return map
 }
 
 /**
@@ -16,12 +16,12 @@ export function generateMaps(items, type = 'name', params = {}) {
  * @returns
  */
 export function mergeData(source, target = {}) {
-	const data = { ...source }
-	for (let key of Object.keys(data)) {
-		const value = target[key]
-		if (value !== undefined) {
-			data[key] = value
-		}
-	}
-	return data
+  const data = { ...source }
+  for (let key of Object.keys(data)) {
+    const value = target[key]
+    if (value !== undefined) {
+      data[key] = value
+    }
+  }
+  return data
 }

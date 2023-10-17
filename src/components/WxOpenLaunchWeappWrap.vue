@@ -1,22 +1,24 @@
 <template>
-	<wx-open-launch-weapp
-		v-bind="$attrs"
-		style="
-			position: absolute;
-			top: 0;
-			display: block;
-			width: 100%;
-			height: 100%;
-		"
-	>
-		<div v-is="'script'" type="text/wxtag-template" style="display: block">
-			<div v-is="'style'">
-				.weapp-btn { position: absolute; top: 0; left: 0; right: 0; bottom: 0;
-				z-index: 1000;}
-			</div>
-			<div class="weapp-btn"></div>
-		</div>
-	</wx-open-launch-weapp>
+  <wx-open-launch-weapp
+    v-bind="$attrs"
+    style="
+      position: absolute;
+      top: 0;
+      display: block;
+      width: 100%;
+      height: 100%;
+    "
+  >
+    <!-- eslint-disable-next-line vue/no-deprecated-v-is -->
+    <div v-is="'script'" type="text/wxtag-template" style="display: block">
+      <!-- eslint-disable-next-line vue/no-deprecated-v-is -->
+      <div v-is="'style'">
+        .weapp-btn { position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+        z-index: 1000;}
+      </div>
+      <div class="weapp-btn"></div>
+    </div>
+  </wx-open-launch-weapp>
 </template>
 
 <script>

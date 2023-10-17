@@ -7,95 +7,95 @@ import { defineConfig, loadEnv } from 'vite'
 import vue from '@vitejs/plugin-vue'
 
 export default defineConfig(({ mode }) => {
-	// vite 中获取环境变量
-	const isProduct = mode === 'production'
-	const baseUrl = loadEnv(mode, process.cwd()).VITE_APP_BASE_URL
-	return {
-		base: baseUrl,
-		server: {
-			host: '0.0.0.0',
-			port: 8888,
-			open: false,
-			https: false,
-			proxy: {
-				'/api': {
-					target: 'http://192.168.16.97:8085',
-					changeOrigin: true,
-					rewrite: (path: string) => path.replace(/^\/api/, ''),
-				},
-			},
-		},
-		esbuild: {
-			drop: isProduct ? ['console', 'debugger'] : [],
-		},
-		build: {
-			minify: 'esbuild',
-			target: 'es6',
-			chunkSizeWarningLimit: 500,
-			assetsInlineLimit: 1024 * 6,
-			rollupOptions: {
-				output: {
-					manualChunks: {
-						'vue-vendor': ['vue', 'vue-router'],
-					},
-					chunkFileNames: 'js/[name]-[hash].js',
-					entryFileNames: 'js/[name]-[hash].js',
-					assetFileNames: '[ext]/[name]-[hash].[ext]',
-				},
-			},
-		},
-		resolve: {
-			// 配置别名
-			alias: {
-				'@': path.resolve(__dirname, 'src'),
-				'@api': path.resolve(__dirname, 'src/api'),
-				'@utils': path.resolve(__dirname, 'src/utils'),
-				'@store': path.resolve(__dirname, 'src/store'),
-				'@assets': path.resolve(__dirname, 'src/assets'),
-				'@views': path.resolve(__dirname, 'src/views'),
-				'@use': path.resolve(__dirname, 'src/use'),
-				'@components': path.resolve(__dirname, 'src/components'),
-			},
-		},
-		css: {
-			// 配置引入全局变量
-			preprocessorOptions: {
-				scss: {
-					additionalData: '@import "@/assets/style/var.scss";',
-				},
-			},
-			postcss: {
-				plugins: [
-					// px => vw
-					postcsspxtoviewport({
-						unitToConvert: 'px',
-						viewportWidth: 750, // 视窗的宽度, 根据设计稿的尺寸
-						unitPrecision: 3, //指定`px`转换为视窗单位值的小数位数（很多时候无法整除）
-						propList: ['*'],
-						exclude: [/node_modules/],
-						selectorBlackList: ['ignore_'], //指定不转换为视窗单位的类,
-					}),
-				],
-			},
-		},
-		plugins: [
-			vue(),
-			Components({
-				resolvers: [VantResolver()],
-			}),
-			AutoImport({
-				dts: true, // 会在根目录生成auto-imports.d.ts，里面可以看到自动导入的api
-				imports: ['vue', 'vue-router', 'pinia'],
-				// eslintrc: {
-				// 	enabled: false,
-				// 	filepath: './.eslintrc-auto-import.json',
-				// 	globalsPropValue: true,
-				// },
-			}),
-		],
-		// optimizeDeps: {
-		// 为一个字符串数组
-		// include: ['lodash-es'],
-		// },
-	}
+  // vite 中获取环境变量
+  const isProduct = mode === 'production'
+  const baseUrl = loadEnv(mode, process.cwd()).VITE_APP_BASE_URL
+  return {
+    base: baseUrl,
+    server: {
+      host: '0.0.0.0',
+      port: 8888,
+      open: false,
+      https: false,
+      proxy: {
+        '/api': {
+          target: 'http://192.168.16.97:8085',
+          changeOrigin: true,
+          rewrite: (path: string) => path.replace(/^\/api/, ''),
+        },
+      },
+    },
+    esbuild: {
+      drop: isProduct ? ['console', 'debugger'] : [],
+    },
+    build: {
+      minify: 'esbuild',
+      target: 'es6',
+      chunkSizeWarningLimit: 500,
+      assetsInlineLimit: 1024 * 6,
+      rollupOptions: {
+        output: {
+          manualChunks: {
+            'vue-vendor': ['vue', 'vue-router'],
+          },
+          chunkFileNames: 'js/[name]-[hash].js',
+          entryFileNames: 'js/[name]-[hash].js',
+          assetFileNames: '[ext]/[name]-[hash].[ext]',
+        },
+      },
+    },
+    resolve: {
+      // 配置别名
+      alias: {
+        '@': path.resolve(__dirname, 'src'),
+        '@api': path.resolve(__dirname, 'src/api'),
+        '@utils': path.resolve(__dirname, 'src/utils'),
+        '@store': path.resolve(__dirname, 'src/store'),
+        '@assets': path.resolve(__dirname, 'src/assets'),
+        '@views': path.resolve(__dirname, 'src/views'),
+        '@use': path.resolve(__dirname, 'src/use'),
+        '@components': path.resolve(__dirname, 'src/components'),
+      },
+    },
+    css: {
+      // 配置引入全局变量
+      preprocessorOptions: {
+        scss: {
+          additionalData: '@import "@/assets/style/var.scss";',
+        },
+      },
+      postcss: {
+        plugins: [
+          // px => vw
+          postcsspxtoviewport({
+            unitToConvert: 'px',
+            viewportWidth: 750, // 视窗的宽度, 根据设计稿的尺寸
+            unitPrecision: 3, //指定`px`转换为视窗单位值的小数位数（很多时候无法整除）
+            propList: ['*'],
+            exclude: [/node_modules/],
+            selectorBlackList: ['ignore_'], //指定不转换为视窗单位的类,
+          }),
+        ],
+      },
+    },
+    plugins: [
+      vue(),
+      Components({
+        resolvers: [VantResolver()],
+      }),
+      AutoImport({
+        dts: true, // 会在根目录生成auto-imports.d.ts，里面可以看到自动导入的api
+        imports: ['vue', 'vue-router', 'pinia'],
+        // eslintrc: {
+        // 	enabled: false,
+        // 	filepath: './.eslintrc-auto-import.json',
+        // 	globalsPropValue: true,
+        // },
+      }),
+    ],
+    // optimizeDeps: {
+    // 为一个字符串数组
+    // include: ['lodash-es'],
+    // },
+  }
 })

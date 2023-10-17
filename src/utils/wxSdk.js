@@ -8,29 +8,29 @@
  * @returns {Promise<boolean>} promise对象
  */
 export function initWxConf(conf = {}) {
-	return new Promise((resolve) => {
-		window.wx.config({
-			debug: false,
-			appId: conf.appId,
-			timestamp: conf.timestamp,
-			nonceStr: conf.nonceStr,
-			signature: conf.signature,
-			jsApiList: [
-				// 需要调用的JS接口列表
-				'hideMenuItems',
-				'onMenuShareAppMessage', // 分享
-				// 'onMenuShareTimeline', // 分享朋友圈
-			],
-			// 小程序跳转sdk
-			// openTagList: ['wx-open-launch-weapp'],
-		})
-		window.wx.ready(() => {
-			window.wx.hideMenuItems({
-				menuList: hideMenuList(),
-			})
-			resolve(true)
-		})
-	})
+  return new Promise((resolve) => {
+    window.wx.config({
+      debug: false,
+      appId: conf.appId,
+      timestamp: conf.timestamp,
+      nonceStr: conf.nonceStr,
+      signature: conf.signature,
+      jsApiList: [
+        // 需要调用的JS接口列表
+        'hideMenuItems',
+        'onMenuShareAppMessage', // 分享
+        // 'onMenuShareTimeline', // 分享朋友圈
+      ],
+      // 小程序跳转sdk
+      // openTagList: ['wx-open-launch-weapp'],
+    })
+    window.wx.ready(() => {
+      window.wx.hideMenuItems({
+        menuList: hideMenuList(),
+      })
+      resolve(true)
+    })
+  })
 }
 
 /** 初始化企业微信
@@ -42,35 +42,35 @@ export function initWxConf(conf = {}) {
  * @returns {Promise<boolean>} promise对象
  */
 export function initQwxConf(conf = {}) {
-	return new Promise((resolve) => {
-		window.wx.agentConfig({
-			beta: true,
-			debug: true,
-			corpid: '',
-			agentid: '',
-			timestamp: conf.timestamp,
-			nonceStr: conf.nonceStr,
-			signature: conf.signature,
-			jsApiList: [
-				// 需要调用的JS接口列表
-				'hideMenuItems',
-				'onMenuShareAppMessage', // 分享
-				// 'onMenuShareTimeline', // 分享朋友圈
-			],
-			success: () => {
-				window.wx.hideMenuItems({
-					menuList: hideMenuList(),
-				})
-				resolve(true)
-			},
-			fail: (res) => {
-				console.log('agentConfig: fail', res)
-				if (res.errMsg.indexOf('function not exist') > -1) {
-					window.alert('版本过低请升级')
-				}
-			},
-		})
-	})
+  return new Promise((resolve) => {
+    window.wx.agentConfig({
+      beta: true,
+      debug: true,
+      corpid: '',
+      agentid: '',
+      timestamp: conf.timestamp,
+      nonceStr: conf.nonceStr,
+      signature: conf.signature,
+      jsApiList: [
+        // 需要调用的JS接口列表
+        'hideMenuItems',
+        'onMenuShareAppMessage', // 分享
+        // 'onMenuShareTimeline', // 分享朋友圈
+      ],
+      success: () => {
+        window.wx.hideMenuItems({
+          menuList: hideMenuList(),
+        })
+        resolve(true)
+      },
+      fail: (res) => {
+        console.log('agentConfig: fail', res)
+        if (res.errMsg.indexOf('function not exist') > -1) {
+          window.alert('版本过低请升级')
+        }
+      },
+    })
+  })
 }
 
 /** 注册分享
@@ -82,13 +82,13 @@ export function initQwxConf(conf = {}) {
  * @param {Function} onSuccess  成功回调参数
  */
 export function onQwxShare(info, onSuccess) {
-	window.wx.onMenuShareAppMessage({
-		title: info.title,
-		desc: info.desc,
-		link: info.link,
-		imgUrl: info.imgUrl,
-	})
-	onSuccess && onSuccess()
+  window.wx.onMenuShareAppMessage({
+    title: info.title,
+    desc: info.desc,
+    link: info.link,
+    imgUrl: info.imgUrl,
+  })
+  onSuccess && onSuccess()
 }
 
 /**
@@ -96,20 +96,20 @@ export function onQwxShare(info, onSuccess) {
  * @param {array} urls
  */
 export function previewImage(urls) {
-	window.wx.previewImage({
-		current: urls[0], // 当前显示图片的http链接
-		urls, // 需要预览的图片http链接列表
-	})
+  window.wx.previewImage({
+    current: urls[0], // 当前显示图片的http链接
+    urls, // 需要预览的图片http链接列表
+  })
 }
 
 function hideMenuList() {
-	return [
-		'menuItem:copyUrl',
-		'menuItem:favorite',
-		'menuItem:share:qq',
-		'menuItem:share:QZone',
-		'menuItem:refresh',
-		'menuItem:openWithSafari',
-		'menuItem:openWithQQBrowser',
-	]
+  return [
+    'menuItem:copyUrl',
+    'menuItem:favorite',
+    'menuItem:share:qq',
+    'menuItem:share:QZone',
+    'menuItem:refresh',
+    'menuItem:openWithSafari',
+    'menuItem:openWithQQBrowser',
+  ]
 }

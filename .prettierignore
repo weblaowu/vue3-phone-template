@@ -1,0 +1,7 @@
+build
+.cache
+
+# Ignore all HTML files:
+*.html
+*.yml
+*.yaml
