@@ -15,9 +15,7 @@
 <script setup>
 import { isPromise } from '@utils/type'
 import { regPhone } from '@utils/rule'
-
 import { showFailToast } from 'vant'
-import 'vant/es/toast/style'
 
 const props = defineProps({
 	phone: {

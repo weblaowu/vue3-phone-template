@@ -1,7 +1,6 @@
 import router from './router'
 import { getUserIdApi } from './api/index'
 import { showFailToast } from 'vant'
-import 'vant/es/toast/style'
 
 // 重定向获取code
 const goToWxAuthorizeUrl = () => {

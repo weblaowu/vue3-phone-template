@@ -19,17 +19,20 @@
 	</wx-open-launch-weapp>
 </template>
 
-<script setup>
-/* 父元素需要设置定位样式：position: relative;
-:appid="item.appid"
-:path="item.path"
-@launch="handleLaunchFn(item)"
-@error="handleErrorFn"
+<script>
+/*父元素需要设置定位样式：
+    position: relative;
+  组件传参：
+		:appid="item.appid"
+		:path="item.path"
+		@launch="handleLaunchFn(item)"
+		@error="handleErrorFn"
 */
-import { initWxConf } from '@/utils/wxSdk'
-
-const attrs = useAttrs()
-console.log('attrs: ', attrs)
 </script>
-
-<style lang="scss" scoped></style>
+<script setup>
+import { initWxConf } from '@/utils/wxSdk'
+/* 注入自定义标签 */
+// sdkOauthApi({ url: location.href.split('#')[0] }).then((res) => {
+// 	initWxConf(res.data)
+// })
+</script>

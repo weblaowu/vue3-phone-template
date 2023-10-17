@@ -32,6 +32,7 @@
 		"src/**/*.tsx",
 		"src/**/*.vue",
 		"./auto-imports.d.ts",
-		"src/use/useTools.js"
+		"src/use/useTools.js",
+		"src/utils/wxSdk.js"
 	]
 }
