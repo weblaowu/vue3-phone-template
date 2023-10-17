@@ -7,8 +7,6 @@
 </template>
 
 <script setup>
-import { Session } from '@/utils/storage'
-
 // 诉求表单组
 const formData = ref({
 	number: '',
@@ -22,13 +20,13 @@ const fields1 = [
 		name: 'number',
 		required: true,
 		placeholder: '请输入产品号码',
-		// rules: [{ required: true, message: 'xsxasxs' }],
+		rules: [{ required: true, message: '请输入' }],
 	},
 	{
 		label: '发送号码',
 		name: 'code',
 		placeholder: '请输入发送号码',
-		// rules: [{ required: true, message: '' }],
+		rules: [{ required: true, message: '' }],
 	},
 	{
 		label: '问题描述',
@@ -57,12 +55,7 @@ const groups = [
 ]
 
 const handleSubmit = () => {
-	console.log('xsxs')
-	Session.set('code', {})
-	setTimeout(() => {
-		console.log('get:', Session.get('code'))
-		console.log('111111111')
-	}, 3000)
+	console.log('handleSubmit:')
 }
 </script>
 

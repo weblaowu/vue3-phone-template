@@ -44,8 +44,6 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
-
 defineOptions({
 	name: 'FormWrap',
 })
@@ -90,26 +88,22 @@ const props = defineProps({
 	},
 })
 
-const formData = ref({})
-
 const groupsComp = computed(() => {
 	const groups = !props.groups[0]?.fields
 		? [{ title: '', fields: props.groups }]
 		: props.groups
-	collectFormData(groups)
 	return groups
 })
 
 // 收集 name
-function collectFormData(groups) {
-	for (let key of groups) {
-		console.log('key: ', key)
-	}
-}
+// function collectFormData(groups) {
+// 	for (let key of groups) {
+// 		console.log('key: ', key)
+// 	}
+// }
 
 const dataComp = computed({
 	get() {
-		// console.log('props.data: ', props.data)
 		return props.data
 	},
 })
