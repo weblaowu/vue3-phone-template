@@ -9,6 +9,7 @@
     "build:test": "vite build --mode test",
     "preview:test": "vite preview --mode test",
     "lint:script": "eslint --ext .vue,.js,.jsx,.ts,.tsx --fix --quiet ./src",
+    "prettier": "npx prettier --write .",
     "prepare": "husky install"
   },
   "lint-staged": {
