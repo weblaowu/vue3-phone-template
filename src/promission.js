@@ -1,6 +1,12 @@
+import NProgress from 'nprogress'
+import 'nprogress/nprogress.css'
 import router from './router'
 import { getUserIdApi } from './api/index'
 import { showFailToast } from 'vant'
+
+NProgress.configure({
+  showSpinner: false, // 是否显示加载ico
+})
 
 // 重定向获取code
 const goToWxAuthorizeUrl = () => {
@@ -33,6 +39,7 @@ export const authorizeAndTrack = (code, next, cb) => {
 
 // 路由进入之前
 router.beforeEach((to, _, next) => {
+  NProgress.start()
   // 无权限页面直接进入
   if (to.path === '/promission') return next()
   const sessionCode = sessionStorage.getItem('code')
@@ -43,6 +50,10 @@ router.beforeEach((to, _, next) => {
     cacheCode(code, openId)
     next()
   })
+})
+
+router.afterEach(() => {
+  NProgress.done()
 })
 
 // 缓存code和openid
