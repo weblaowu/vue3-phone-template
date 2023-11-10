@@ -33,6 +33,7 @@
     "src/**/*.vue",
     "./auto-imports.d.ts",
     "src/use/useTools.js",
-    "src/utils/wxSdk.js"
+    "src/utils/wxSdk.js",
+    "src/utils/wechatAuth.js"
   ]
 }

@@ -5,6 +5,7 @@ import { VantResolver } from 'unplugin-vue-components/resolvers'
 import postcsspxtoviewport from 'postcss-px-to-viewport'
 import { defineConfig, loadEnv } from 'vite'
 import vue from '@vitejs/plugin-vue'
+import { viteMockServe } from 'vite-plugin-mock'
 
 export default defineConfig(({ mode }) => {
   // vite 中获取环境变量
@@ -80,6 +81,12 @@ export default defineConfig(({ mode }) => {
     },
     plugins: [
       vue(),
+      /* 开启mock配置 */
+      // viteMockServe({
+      // 	// localEnabled: true, // 此处可以手动设置为true，也可以根据官方文档格式
+      // 	mockPath: './src/mock/',
+      // 	logger: true,
+      // }),
       Components({
         resolvers: [VantResolver()],
       }),

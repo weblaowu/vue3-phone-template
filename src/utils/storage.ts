@@ -35,13 +35,17 @@ export const Local = {
  */
 export const Session = {
   // 设置临时缓存
-  set(key: string, val: Str) {
+  set(key: string, val: object) {
     window.sessionStorage.setItem(key, JSON.stringify(val))
   },
   // 获取临时缓存
   get(key: string) {
-    const json: any = window.sessionStorage.getItem(key)
-    return JSON.parse(json)
+    const res: string = window.sessionStorage.getItem(key) || ''
+    try {
+      return JSON.parse(res)
+    } catch (err) {
+      return res
+    }
   },
   // 移除临时缓存
   remove(key: string) {
