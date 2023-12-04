@@ -11,6 +11,9 @@ import './assets/style/main.scss'
 import 'vant/es/toast/style'
 // import './promission.js'
 
+import VConsole from 'vconsole'
+// ;['test', 'development'].includes(import.meta.env.MODE) && new VConsole()
+
 const app = createApp(App)
 const pinia = createPinia()
 

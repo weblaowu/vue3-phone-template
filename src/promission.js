@@ -18,10 +18,4 @@ router.beforeEach((to, _, next) => {
 
 router.afterEach(() => {
   NProgress.done()
-  if (window.__wxjs_is_wkwebview) {
-    // IOS
-    if (!window.entryUrl) {
-      window.entryUrl = location.href // 将后面的参数去除
-    }
-  }
 })

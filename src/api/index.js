@@ -8,3 +8,8 @@ export const getUserIdApi = (data) =>
 export const sdkOauthApi = (data) => {
   return http.post('/material/shareMaterial', data)
 }
+
+// test
+export const queryListApi = (data) => {
+  return http.post('/fox/test', data)
+}

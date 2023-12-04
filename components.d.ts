@@ -13,6 +13,7 @@ declare module '@vue/runtime-core' {
     SecondWrap: typeof import('./src/components/Global/SecondWrap/index.vue')['default']
     SendCode: typeof import('./src/components/SendCode/index.vue')['default']
     Skeleton: typeof import('./src/components/Global/Skeleton/index.vue')['default']
+    SvgIcon: typeof import('./src/components/Global/SvgIcon/index.vue')['default']
     VanButton: typeof import('vant/es')['Button']
     VanCellGroup: typeof import('vant/es')['CellGroup']
     VanField: typeof import('vant/es')['Field']

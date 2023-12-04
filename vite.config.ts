@@ -5,7 +5,12 @@ import { VantResolver } from 'unplugin-vue-components/resolvers'
 import postcsspxtoviewport from 'postcss-px-to-viewport'
 import { defineConfig, loadEnv } from 'vite'
 import vue from '@vitejs/plugin-vue'
+import { createSvgIconsPlugin } from 'vite-plugin-svg-icons'
 import { viteMockServe } from 'vite-plugin-mock'
+
+function resolve(dir: string) {
+  return path.join(__dirname, dir)
+}
 
 export default defineConfig(({ mode }) => {
   // vite 中获取环境变量
@@ -20,7 +25,7 @@ export default defineConfig(({ mode }) => {
       https: false,
       proxy: {
         '/api': {
-          target: 'http://192.168.16.97:8085',
+          target: 'http://127.0.0.1:4523/m1/3695511-0-default/',
           changeOrigin: true,
           rewrite: (path: string) => path.replace(/^\/api/, ''),
         },
@@ -82,11 +87,11 @@ export default defineConfig(({ mode }) => {
     plugins: [
       vue(),
       /* 开启mock配置 */
-      // viteMockServe({
-      // 	// localEnabled: true, // 此处可以手动设置为true，也可以根据官方文档格式
-      // 	mockPath: './src/mock/',
-      // 	logger: true,
-      // }),
+      viteMockServe({
+        // localEnabled: true, // 此处可以手动设置为true，也可以根据官方文档格式
+        mockPath: './src/mock/',
+        logger: true,
+      }),
       Components({
         resolvers: [VantResolver()],
       }),
@@ -98,6 +103,12 @@ export default defineConfig(({ mode }) => {
         // 	filepath: './.eslintrc-auto-import.json',
         // 	globalsPropValue: true,
         // },
+      }),
+      createSvgIconsPlugin({
+        // 指定需要缓存的图标文件夹
+        iconDirs: [resolve('./src/assets/svgs')],
+        // 指定symbolId格式
+        symbolId: '[name]',
       }),
     ],
     // optimizeDeps: {

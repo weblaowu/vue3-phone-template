@@ -5,5 +5,14 @@ export const useLoad = defineStore('loading', () => {
   function setLoading(load) {
     loading.value = load
   }
-  return { loading, setLoading }
+  // 监听load
+  function changeLoading(load) {
+    watch(
+      () => load.value,
+      (value) => {
+        setLoading(value)
+      },
+    )
+  }
+  return { loading, setLoading, changeLoading }
 })

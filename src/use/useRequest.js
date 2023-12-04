@@ -1,3 +1,4 @@
+import axios from 'axios'
 import { mergeData } from '@/utils/data.js'
 import { isFunction } from '@/utils/type.js'
 
@@ -5,8 +6,11 @@ import { isFunction } from '@/utils/type.js'
 const defaultConfig = {
   loadingDelay: 300, // loading 延迟时间
   loadingKeep: 300, // loading 保持时间
-  initialData: [], // data 数据格式
   immediate: false, // 是否立即发起请求
+  initialData: [], // data 数据格式
+  params: {}, // 请求初始化参数
+  onBefore: (res) => res, // 请求发送前的钩子函数
+  onSuccess: (res) => res, // 请求成功后的钩子函数
 }
 
 /**
@@ -18,57 +22,81 @@ const defaultConfig = {
  * @param {object} options.config 配置项，覆盖默认配置 defaultConfig
  * @returns {} data loading error run
  */
-const useRequest = (promiseData, options) => {
-  const { onSuccess, params: outParams, ...config } = options || {}
+const useRequest = (promiseData, options = {}) => {
   if (!isFunction(promiseData)) {
-    throw new Error('useRequest第一个参数必须是函数并且它返回一个promise对象')
+    throw new Error('promiseData is required： must be a promise')
   }
   // 执行 loading 的定时器
-  let temp = { timerLoad: null, finallyDelay: 0 }
+  let timerData = { timerLoad: null, finallyDelay: 0 }
   // 合并配置项
-  const { loadingDelay, loadingKeep, immediate, initialData } = mergeData(
-    defaultConfig,
-    config,
-  )
+  const config = mergeData(defaultConfig, options)
   // 返回的 data
-  const data = ref(initialData)
-  const error = ref(null)
+  const data = ref(config.initialData)
+  const error = ref('')
   const loading = ref(false)
+  /*TODO: 创建 Axios 取消令牌 */
+  const cancelTokenSource = axios.CancelToken.source()
   // 执行请求方法
-  const run = async (inParams, runSuccess) => {
-    handleLoading(loading, loadingDelay, temp)
+  const run = async ({ params, ...runOption } = {}) => {
+    // 获取当前时间
     const startDate = new Date().getTime()
-    // params 是执行 run 方法传入的请求参数
-    const params = { ...outParams, ...inParams }
-    return promiseData(params)
-      .then((res) => {
-        // 取消loading
-        cancelLoading(startDate, loadingDelay, loadingKeep, temp)
-        // 处理数据
-        const success = onSuccess || runSuccess
-        data.value = success ? success(res.data) : res.data
-        const { code, message } = res
-        // 返回处理过的数据格式
-        return { code, message, data: data.value }
-      })
-      .catch((err) => {
-        cancelLoading(startDate, loadingDelay, loadingKeep, temp)
-        error.value = err
-      })
-      .finally(() => {
-        // 是否需要延迟执行
-        if (temp.finallyDelay === 0) {
+    // 执行loading
+    handleLoading(loading, config.loadingDelay, timerData)
+    try {
+      // 请求发送前钩子
+      ;(runOption?.onBefore || config.onBefore)()
+      // 合并初始参数 和 run传入的参数
+      const paramsData = { ...config.params, ...(params || {}) }
+      // 发起请求
+      const res = await promiseData(paramsData)
+      console.log('run 方法内部res: ', res)
+      // 请求结束后钩子
+      data.value = (runOption?.onSuccess || config.onSuccess)(res)
+      // 处理数据
+      return Promise.resolve(data.value)
+    } catch (err) {
+      // 取消loading
+      cancelLoading(
+        startDate,
+        config.loadingDelay,
+        config.loadingKeep,
+        timerData,
+      )
+      error.value = err
+      return Promise.reject(err)
+    } finally {
+      // 是否需要延迟执行
+      if (timerData.finallyDelay === 0) {
+        loading.value = false
+      } else {
+        setTimeout(() => {
           loading.value = false
-        } else {
-          setTimeout(() => {
-            loading.value = false
-          }, temp.finallyDelay)
-        }
-        temp.finallyDelay = 0
-      })
+        }, timerData.finallyDelay)
+      }
+      timerData.finallyDelay = 0
+    }
   }
+
+  // 监听参数变化；自动重新请求
+  watch(
+    () => options.params,
+    (newParams) => {
+      if (newParams) {
+        run(newParams)
+      }
+    },
+    {
+      deep: true, // 如果 params 是一个复杂对象，则需要深度监听
+    },
+  )
   // 是否立即执行
-  if (immediate) run(outParams)
+  if (config.immediate) run(options.params)
+  // 组件卸载时取消请求
+  onUnmounted(() => {
+    if (cancelTokenSource) {
+      cancelTokenSource.cancel('Component unmounted：cancel request')
+    }
+  })
   return {
     data,
     run,
@@ -78,11 +106,11 @@ const useRequest = (promiseData, options) => {
 }
 
 // 执行loading
-function handleLoading(loading, time, temp) {
-  clearTimer(temp)
-  temp.timerLoad = setTimeout(() => {
+function handleLoading(loading, loadingDelay, timerData) {
+  clearTimer(timerData)
+  timerData.timerLoad = setTimeout(() => {
     loading.value = true
-  }, time)
+  }, loadingDelay)
 }
 // 取消loading
 function cancelLoading(startDate, loadingDelay, loadingKeep, temp) {
@@ -95,9 +123,10 @@ function cancelLoading(startDate, loadingDelay, loadingKeep, temp) {
   }
 }
 
-function clearTimer(temp) {
-  clearTimeout(temp.timerLoad)
-  temp.timerLoad = null
+// 清除定时器
+function clearTimer(timerData) {
+  clearTimeout(timerData.timerLoad)
+  timerData.timerLoad = null
 }
 
 export default useRequest

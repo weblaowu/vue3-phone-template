@@ -7,11 +7,16 @@
 </template>
 
 <script setup>
+import { queryListApi } from '@/api/index'
+import useRequest from '@use/useRequest'
+import { useLoad } from '@/store/loading'
+
+const { changeLoading } = useLoad()
 // 诉求表单组
 const formData = ref({
-  number: '',
-  problem: '',
-  code: '',
+  number: 'asx',
+  problem: 'asxas',
+  code: 'asxsa',
 })
 
 const fields1 = [
@@ -54,8 +59,21 @@ const groups = [
   { title: '联系方式', fields: fields2 },
 ]
 
+const { data, run, loading } = useRequest(queryListApi, {
+  params: {
+    pageSize: 10,
+    pageNum: 1,
+  },
+  onSuccess(res) {
+    return res
+  },
+})
+
+changeLoading(loading)
+
 const handleSubmit = () => {
   console.log('handleSubmit:')
+  run()
 }
 </script>
 
