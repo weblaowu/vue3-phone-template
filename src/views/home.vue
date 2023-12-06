@@ -1,11 +1,5 @@
 <template>
-  <van-button @click="handlClick">++</van-button>
-  <form-wrap
-    :groups="fields1"
-    :data="formData"
-    @submit="handleSubmit"
-  ></form-wrap>
-  <div v-for="item in data" :key="item.idx">{{ item.name }}</div>
+  <form-wrap :groups="fields1" :data="formData" @submit="handleSubmit" />
 </template>
 
 <script setup>
@@ -14,11 +8,9 @@ import useRequest from '@use/useRequest'
 
 // 诉求表单组
 const formData = ref({
-  number: 'asx',
-  problem: 'asxas',
-  code: 'asxsa',
-  pageSize: 10,
-  pageNum: 1,
+  number: '111',
+  problem: '123',
+  code: 'ddd',
 })
 
 const fields1 = [
@@ -75,14 +67,6 @@ const { run, data } = useRequest(queryListApi, {
 })
 
 const handleSubmit = () => {
-  run().then((res) => {
-    console.log('res:LLLLLL ', res)
-  })
-}
-
-const handlClick = () => {
-  pageState.value.pageNum++
+  run()
 }
 </script>
-
-<style lang="scss" scoped></style>
