@@ -1,10 +1,6 @@
 import axios from 'axios'
 import { showToast } from 'vant'
 
-// 请求取消
-const CancelToken = axios.CancelToken
-const source = CancelToken.source()
-
 // 创建axios实例
 const instance = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL,
@@ -12,8 +8,6 @@ const instance = axios.create({
     'Content-Type': 'application/json',
   },
   timeout: 20000,
-  // 取消请求（比如你进入某个路由后，可能就停在了这个页面就1s时间， 就立马进入了下个路由，这时，前边这个路由的请求就可以取消掉了）
-  cancelToken: source.token,
 })
 
 /** 添加请求拦截器 * */
@@ -45,9 +39,9 @@ instance.interceptors.response.use(
     }
   },
   (error) => {
-    if (error.response) {
-      console.log('error: ', error)
-    }
+    if (!error.response) return Promise.reject(error)
+    const { data, status } = error.response
+    return Promise.reject({ data, status })
   },
 )
 

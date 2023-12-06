@@ -1,22 +1,24 @@
 <template>
+  <van-button @click="handlClick">++</van-button>
   <form-wrap
     :groups="fields1"
     :data="formData"
     @submit="handleSubmit"
   ></form-wrap>
+  <div v-for="item in data" :key="item.idx">{{ item.name }}</div>
 </template>
 
 <script setup>
 import { queryListApi } from '@/api/index'
 import useRequest from '@use/useRequest'
-import { useLoad } from '@/store/loading'
 
-const { changeLoading } = useLoad()
 // 诉求表单组
 const formData = ref({
   number: 'asx',
   problem: 'asxas',
   code: 'asxsa',
+  pageSize: 10,
+  pageNum: 1,
 })
 
 const fields1 = [
@@ -59,21 +61,27 @@ const groups = [
   { title: '联系方式', fields: fields2 },
 ]
 
-const { data, run, loading } = useRequest(queryListApi, {
-  params: {
-    pageSize: 10,
-    pageNum: 1,
-  },
+const pageState = ref({
+  pageSize: 10,
+  pageNum: 1,
+})
+
+const { run, data } = useRequest(queryListApi, {
+  immediate: true,
+  params: pageState,
   onSuccess(res) {
-    return res
+    return res.list
   },
 })
 
-changeLoading(loading)
-
 const handleSubmit = () => {
-  console.log('handleSubmit:')
-  run()
+  run().then((res) => {
+    console.log('res:LLLLLL ', res)
+  })
+}
+
+const handlClick = () => {
+  pageState.value.pageNum++
 }
 </script>
 

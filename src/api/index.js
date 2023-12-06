@@ -10,6 +10,12 @@ export const sdkOauthApi = (data) => {
 }
 
 // test
-export const queryListApi = (data) => {
-  return http.post('/fox/test', data)
+export const queryListApi = (data, signal) => {
+  console.log('signal: ', signal)
+  return http.post('/fox/test', data, signal)
 }
+
+// export const queryDetailApi = (params, signal) => {
+//   console.log('signal: ', signal)
+//   return http.get('/fox/detail', params, signal)
+// }

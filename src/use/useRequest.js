@@ -1,6 +1,7 @@
-import axios from 'axios'
+import { debounce } from 'lodash-es'
 import { mergeData } from '@/utils/data.js'
 import { isFunction } from '@/utils/type.js'
+import { useLoading } from '@/store/loading'
 
 // 默认的配置项
 const defaultConfig = {
@@ -9,7 +10,8 @@ const defaultConfig = {
   immediate: false, // 是否立即发起请求
   initialData: [], // data 数据格式
   params: {}, // 请求初始化参数
-  onBefore: (res) => res, // 请求发送前的钩子函数
+  isReactive: true, // 是否开启响应式参数
+  onBefore: (resolve) => resolve(), // 请求发送前的钩子函数
   onSuccess: (res) => res, // 请求成功后的钩子函数
 }
 
@@ -18,7 +20,9 @@ const defaultConfig = {
  * @param {function} promiseData api请求，返回promise对象
  * @param {object} options 请求的选项
  * @param {function} options.onSuccess 请求成功的回调方法
+ * @param {function} options.onBefore 请求发送前的钩子函数
  * @param {object} options.params 请求的参数
+ * @param {object} options.isReactive 是否开启自动响应外部参数的变化
  * @param {object} options.config 配置项，覆盖默认配置 defaultConfig
  * @returns {} data loading error run
  */
@@ -32,28 +36,42 @@ const useRequest = (promiseData, options = {}) => {
   const config = mergeData(defaultConfig, options)
   // 返回的 data
   const data = ref(config.initialData)
-  const error = ref('')
-  const loading = ref(false)
-  /*TODO: 创建 Axios 取消令牌 */
-  const cancelTokenSource = axios.CancelToken.source()
+  const error = ref({})
+  // loading
+  const loadStore = useLoading()
+  const loading = computed(() => loadStore.loading)
+  // 创建 AbortController 实例
+  let abortController = new AbortController()
   // 执行请求方法
   const run = async ({ params, ...runOption } = {}) => {
     // 获取当前时间
     const startDate = new Date().getTime()
+    // 每次请求前重置 AbortController
+    abortController = new AbortController()
     // 执行loading
-    handleLoading(loading, config.loadingDelay, timerData)
+    handleLoading(loadStore, config.loadingDelay, timerData)
     try {
       // 请求发送前钩子
-      ;(runOption?.onBefore || config.onBefore)()
+      await new Promise((resolve) => {
+        ;(runOption?.onBefore || config.onBefore)(resolve)
+      })
       // 合并初始参数 和 run传入的参数
-      const paramsData = { ...config.params, ...(params || {}) }
+      const paramsData = { ...unref(config.params), ...unref(params || {}) }
       // 发起请求
-      const res = await promiseData(paramsData)
-      console.log('run 方法内部res: ', res)
+      const res = await promiseData(paramsData, {
+        signal: abortController.signal,
+      })
       // 请求结束后钩子
-      data.value = (runOption?.onSuccess || config.onSuccess)(res)
+      data.value = (runOption?.onSuccess || config.onSuccess)(res.data)
+      // 取消loading
+      cancelLoading(
+        startDate,
+        config.loadingDelay,
+        config.loadingKeep,
+        timerData,
+      )
       // 处理数据
-      return Promise.resolve(data.value)
+      return Promise.resolve({ ...res, data: data.value })
     } catch (err) {
       // 取消loading
       cancelLoading(
@@ -67,49 +85,46 @@ const useRequest = (promiseData, options = {}) => {
     } finally {
       // 是否需要延迟执行
       if (timerData.finallyDelay === 0) {
-        loading.value = false
+        loadStore.setLoading(false)
       } else {
         setTimeout(() => {
-          loading.value = false
+          loadStore.setLoading(false)
         }, timerData.finallyDelay)
       }
       timerData.finallyDelay = 0
     }
   }
-
-  // 监听参数变化；自动重新请求
-  watch(
-    () => options.params,
-    (newParams) => {
-      if (newParams) {
-        run(newParams)
-      }
-    },
-    {
-      deep: true, // 如果 params 是一个复杂对象，则需要深度监听
-    },
-  )
-  // 是否立即执行
-  if (config.immediate) run(options.params)
+  // 请求节流
+  const debouncedRun = debounce(run, 300) // 300ms 防抖时间
+  // 响应外部参数的变化
+  changeParams(config, options.params, debouncedRun)
+  onMounted(() => {
+    // 是否立即执行
+    if (config.immediate) run(options.params)
+  })
   // 组件卸载时取消请求
   onUnmounted(() => {
-    if (cancelTokenSource) {
-      cancelTokenSource.cancel('Component unmounted：cancel request')
-    }
+    abortController.abort()
+    loadStore.setLoading(false)
   })
+  // 取消请求
+  const onabort = () => {
+    abortController.abort()
+  }
   return {
     data,
     run,
     error,
     loading,
+    onabort,
   }
 }
 
 // 执行loading
-function handleLoading(loading, loadingDelay, timerData) {
+function handleLoading(loadStore, loadingDelay, timerData) {
   clearTimer(timerData)
   timerData.timerLoad = setTimeout(() => {
-    loading.value = true
+    loadStore.setLoading(true)
   }, loadingDelay)
 }
 // 取消loading
@@ -127,6 +142,24 @@ function cancelLoading(startDate, loadingDelay, loadingKeep, temp) {
 function clearTimer(timerData) {
   clearTimeout(timerData.timerLoad)
   timerData.timerLoad = null
+}
+
+// 响应外部参数的变化
+function changeParams(config, params, run) {
+  if (!config.isReactive) return
+  // 监听参数变化；自动重新请求
+  watch(
+    () => params,
+    (newParams) => {
+      if (newParams) {
+        run(newParams)
+      }
+    },
+    {
+      // 如果 params 是一个复杂对象，则需要深度监听
+      deep: true,
+    },
+  )
 }
 
 export default useRequest

@@ -2,7 +2,7 @@ import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 
 import App from './App.vue'
-import globalComp from '@/components/Global'
+import globalComp from '@/components/Global/index.js'
 import router from './router'
 import 'animate.css'
 import 'normalize.css/normalize.css'
@@ -12,7 +12,7 @@ import 'vant/es/toast/style'
 // import './promission.js'
 
 import VConsole from 'vconsole'
-// ;['test', 'development'].includes(import.meta.env.MODE) && new VConsole()
+;['test'].includes(import.meta.env.MODE) && new VConsole()
 
 const app = createApp(App)
 const pinia = createPinia()

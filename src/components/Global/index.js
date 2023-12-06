@@ -5,7 +5,7 @@ const globalComp = {
   install: (app) => {
     for (let path in modules) {
       modules[path]().then((comp) => {
-        app.component(comp['default']['name'], comp['default'])
+        app.component(comp.default.name, comp['default'])
       })
     }
   },

@@ -12,11 +12,12 @@ export function setTimer(callback, delay) {
 }
 
 // 清除
-export function clearTimer() {
+export function clearTimer(callback) {
   if (timerState.value.isActive) {
     clearTimeout(timerState.value.timerId)
     timerState.value.timerId = null
     timerState.value.isActive = false
+    callback && callback()
   }
 }
 

@@ -12,11 +12,11 @@
   </van-overlay>
 </template>
 <script setup lang="ts">
-import { useLoad } from '@/store/loading'
+import { useLoading } from '@/store/loading'
 import { setToastDefaultOptions } from 'vant'
 setToastDefaultOptions({ duration: 2000 })
 
-const load = useLoad()
+const load = useLoading()
 </script>
 <style scoped lang="scss">
 .van-loading {

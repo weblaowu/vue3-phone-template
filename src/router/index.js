@@ -7,6 +7,10 @@ const router = createRouter({
   routes: [
     {
       path: '/',
+      component: () => import('@/views/index.vue'),
+    },
+    {
+      path: '/home',
       component: () => import('@/views/home.vue'),
     },
     {
