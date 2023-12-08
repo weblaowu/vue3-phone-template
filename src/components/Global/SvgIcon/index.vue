@@ -1,12 +1,11 @@
 <template>
   <svg
     aria-hidden="true"
-    class="svg-icon"
-    :fill="props.color"
-    :width="width"
-    :height="height"
+    :class="svgClass"
+    :fill="color"
+    :style="'width:' + size + ';height:' + size"
   >
-    <use :xlink:href="symbolId" :fill="props.color" />
+    <use :xlink:href="symbolId" />
   </svg>
 </template>
 
@@ -22,33 +21,34 @@ const props = defineProps({
     type: String,
     required: true,
   },
-  size: {
+  svgClass: {
     type: String,
-    default: '1em',
-  },
-  width: {
-    type: String,
-  },
-  height: {
-    type: String,
+    default: '',
   },
   color: {
     type: String,
     default: 'currentColor',
   },
+  size: {
+    type: String,
+    default: '1em',
+  },
 })
+
 const symbolId = computed(() => `#${props.name}`)
-const width = computed(() => (props.width ? props.width : props.size))
-const height = computed(() => (props.height ? props.height : props.size))
+const svgClass = computed(() =>
+  props.svgClass ? `svg-icon ${props.svgClass}` : 'svg-icon',
+)
 </script>
 
 <style lang="scss" scoped>
 .svg-icon {
+  display: inline-block;
   fill: currentColor;
   outline: none;
-
-  &.default-font-size {
-    font-size: 14px;
-  }
+  width: 1em;
+  height: 1em;
+  vertical-align: -0.15em; // 纠正视觉上未对齐效果
+  overflow: hidden;
 }
 </style>

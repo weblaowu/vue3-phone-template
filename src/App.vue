@@ -6,13 +6,13 @@
     class="loading"
     :show="load.loading"
     z-index="2100"
-    duration="0.3"
+    duration="0.2"
   >
     <van-loading color="#333" size="20px" vertical />
   </van-overlay>
 </template>
-<script setup lang="ts">
-import { useLoading } from '@/store/loading'
+<script setup>
+import useLoading from '@/store/loading'
 import { setToastDefaultOptions } from 'vant'
 setToastDefaultOptions({ duration: 2000 })
 

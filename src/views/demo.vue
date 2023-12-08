@@ -1,4 +1,8 @@
 <template>
+  <div class="head">
+    <svg-icon name="intro" size="20" />
+    <span>图标</span>
+  </div>
   <form-wrap :groups="fields1" :data="formData" @submit="handleSubmit" />
 </template>
 
@@ -70,3 +74,11 @@ const handleSubmit = () => {
   run()
 }
 </script>
+<style>
+.head {
+  padding: 30px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+</style>

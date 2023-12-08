@@ -10,12 +10,13 @@ const router = createRouter({
       component: () => import('@/views/index.vue'),
     },
     {
-      path: '/home',
-      component: () => import('@/views/home.vue'),
-    },
-    {
       path: '/promission',
       component: () => import('@/components/NoPromission.vue'),
+    },
+    /* 正式项目请去除改路由 */
+    {
+      path: '/demo',
+      component: () => import('@/views/demo.vue'),
     },
   ],
 })

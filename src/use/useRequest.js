@@ -1,7 +1,7 @@
 import { debounce } from 'lodash-es'
 import { mergeData } from '@/utils/data.js'
 import { isFunction } from '@/utils/type.js'
-import { useLoading } from '@/store/loading'
+import useLoading from '@/store/loading'
 
 // 默认的配置项
 const defaultConfig = {

@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 
-export const useLoading = defineStore('loading', () => {
+const useLoading = defineStore('loading', () => {
   const loading = ref(false)
   function setLoading(load) {
     loading.value = load
@@ -16,3 +16,5 @@ export const useLoading = defineStore('loading', () => {
   }
   return { loading, setLoading, changeLoading }
 })
+
+export default useLoading

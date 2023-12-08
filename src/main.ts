@@ -9,6 +9,9 @@ import 'normalize.css/normalize.css'
 import './assets/style/main.scss'
 // vant toast
 import 'vant/es/toast/style'
+
+import 'virtual:svg-icons-register'
+
 // import './promission.js'
 
 import VConsole from 'vconsole'

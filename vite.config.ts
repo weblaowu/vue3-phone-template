@@ -53,14 +53,14 @@ export default defineConfig(({ mode }) => {
     resolve: {
       // 配置别名
       alias: {
-        '@': path.resolve(__dirname, 'src'),
-        '@api': path.resolve(__dirname, 'src/api'),
-        '@utils': path.resolve(__dirname, 'src/utils'),
-        '@store': path.resolve(__dirname, 'src/store'),
-        '@assets': path.resolve(__dirname, 'src/assets'),
-        '@views': path.resolve(__dirname, 'src/views'),
-        '@use': path.resolve(__dirname, 'src/use'),
-        '@components': path.resolve(__dirname, 'src/components'),
+        '@': resolve('/src'),
+        '@api': resolve('/src/api'),
+        '@utils': resolve('/src/utils'),
+        '@store': resolve('/src/store'),
+        '@assets': resolve('/src/assets'),
+        '@views': resolve('/src/views'),
+        '@use': resolve('/src/use'),
+        '@components': resolve('/src/components'),
       },
     },
     css: {
@@ -104,10 +104,11 @@ export default defineConfig(({ mode }) => {
         // 	globalsPropValue: true,
         // },
       }),
+      // 生成svg雪碧图
       createSvgIconsPlugin({
-        // 指定需要缓存的图标文件夹
-        iconDirs: [resolve('./src/assets/svgs')],
-        // 指定symbolId格式
+        // 指定合并的svg图标放在统一的目录
+        iconDirs: [resolve('/src/assets/svgs')],
+        // 指定symbolId格式, svg.use 使用的href
         symbolId: '[name]',
       }),
     ],
