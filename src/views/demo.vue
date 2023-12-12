@@ -62,8 +62,7 @@ const pageState = ref({
   pageNum: 1,
 })
 
-const { run, data } = useRequest(queryListApi, {
-  immediate: true,
+const { run, data, onAbort } = useRequest(queryListApi, {
   params: pageState,
   onSuccess(res) {
     return res.list

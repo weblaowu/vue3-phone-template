@@ -1,3 +1,4 @@
+import lottie from 'lottie-web'
 /**
  * Lottie 动画
  * @param {document} elem DOM对象
@@ -6,14 +7,14 @@
  * @returns
  */
 export const lottieAnimate = (elem, animationData, opt = {}) => {
-  // return lottie.loadAnimation({
-  // 	container: elem, // 绑定dom节点
-  // 	renderer: 'svg', // 渲染方式:svg、canvas
-  // 	loop: false, // 是否循环播放，默认：false
-  // 	autoplay: true, // 是否自动播放, 默认true
-  // 	animationData: animationData, // AE动画使用bodymovie导出为json数据
-  // 	...opt,
-  // })
+  return lottie.loadAnimation({
+    container: elem, // 绑定dom节点
+    renderer: 'canvas', // 渲染方式:svg、canvas
+    loop: false, // 是否循环播放，默认：false
+    autoplay: true, // 是否自动播放, 默认true
+    ...opt,
+    animationData: animationData, // AE动画使用bodymovie导出为json数据
+  })
 }
 
 /**

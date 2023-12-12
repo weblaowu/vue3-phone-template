@@ -102,21 +102,21 @@ const useRequest = (promiseData, options = {}) => {
     // 是否立即执行
     if (config.immediate) run(options.params)
   })
-  // 组件卸载时取消请求
-  onUnmounted(() => {
-    abortController.abort()
-    loadStore.setLoading(false)
-  })
   // 取消请求
-  const onabort = () => {
+  const onAbort = () => {
     abortController.abort()
   }
+  // 组件卸载时取消请求
+  onUnmounted(() => {
+    onAbort()
+    loadStore.setLoading(false)
+  })
   return {
     data,
     run,
     error,
     loading,
-    onabort,
+    onAbort,
   }
 }
 

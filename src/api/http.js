@@ -31,11 +31,7 @@ instance.interceptors.response.use(
     const { data, status } = response
     if (status === 200) {
       const { code, message } = data
-      if (code === 9999) {
-        showToast({ message, icon: 'fail' })
-      } else {
-        return data
-      }
+      return code === 200 ? data : Promise.inject({ code, message })
     }
   },
   (error) => {

@@ -9,13 +9,7 @@ export const sdkOauthApi = (data) => {
   return http.post('/material/shareMaterial', data)
 }
 
-// test
+// test 注：signal 是取消请求的令牌参数，如需支持取消请求，务必传入该参数
 export const queryListApi = (data, signal) => {
-  console.log('signal: ', signal)
   return http.post('/fox/test', data, signal)
 }
-
-// export const queryDetailApi = (params, signal) => {
-//   console.log('signal: ', signal)
-//   return http.get('/fox/detail', params, signal)
-// }
