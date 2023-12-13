@@ -15,7 +15,7 @@ function resolve(dir: string) {
 export default defineConfig(({ mode }) => {
   // vite 中获取环境变量
   const isProduct = mode === 'production'
-  const baseUrl = loadEnv(mode, process.cwd()).VITE_APP_BASE_URL
+  const baseUrl = loadEnv(mode, process.cwd()).VITE_PUBLIC_PATH
   return {
     base: baseUrl,
     server: {
