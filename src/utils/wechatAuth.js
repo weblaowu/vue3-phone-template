@@ -1,4 +1,4 @@
-import { getUserIdApi } from './api/index'
+import { getUnionidApi } from '../api/index'
 import { showFailToast } from 'vant'
 import { Session } from './storage'
 // 进入鉴权
@@ -7,16 +7,16 @@ export const authorizeAndTrack = (code, next) => {
     goToWxAuthorizeUrl()
   } else {
     // 没code，说明是从公众号进来的，需要先去微信鉴权获取code
-    getUserIdApi({ code }).then((res) => {
+    getUnionidApi({ code }).then((res) => {
       const { code: status, message, data } = res
       // 获取用户信息
       if ([-1, -2].includes(status)) {
         showFailToast(message)
         return next('/promission')
       }
-      const { openId } = data
-      if (!openId) return showFailToast('没有获取到openId')
-      cacheId()
+      const { openid } = data
+      if (!openid) return showFailToast('没有获取到用户信息')
+      cacheId(openid)
       next()
     })
   }
@@ -32,6 +32,6 @@ const goToWxAuthorizeUrl = () => {
 }
 
 // openid
-function cacheId(openId) {
-  Session.set('openid', openId)
+function cacheId(openid) {
+  Session.set('openid', openid)
 }

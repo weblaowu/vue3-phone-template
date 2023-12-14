@@ -1,8 +1,10 @@
 import http from './http'
 
 // 获取公众号用户信息
-export const getUserIdApi = (data) =>
-  http.post('/certificate/wechatOauth', data)
+export const getUnionidApi = (params) =>
+  http.get('/certificate/getUnionid', { params })
+
+// https://njwxtest.jlonline.com/njqxbwechat/njdx-business
 
 // 获取js-sdk签名
 export const sdkOauthApi = (data) => {

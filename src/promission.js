@@ -11,8 +11,12 @@ NProgress.configure({
 // 路由进入之前
 router.beforeEach((to, _, next) => {
   NProgress.start()
+  /* 开发时手动删除这一行 */
+  if (import.meta.env.MODE === 'development') return next()
+  // 已通过鉴权或无权限路由放行
   if (Session.get('openid') || to.path === '/promission') return next()
   const code = import.meta.env.MODE === 'production' ? to.query.code : '123'
+  // 鉴权
   authorizeAndTrack(code, next)
 })
 

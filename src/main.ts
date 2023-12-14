@@ -12,7 +12,7 @@ import 'vant/es/toast/style'
 
 import 'virtual:svg-icons-register'
 
-// import './promission.js'
+import './promission.js'
 
 import VConsole from 'vconsole'
 ;['test'].includes(import.meta.env.MODE) && new VConsole()
