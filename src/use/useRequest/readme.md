@@ -2,7 +2,7 @@
 
 `useRequest` 是基于 vue3 的 `components API` 进行封装的 用于接口请求的 `hook`； 它将返回例如 `data` 等多个请求相关的状态化数据，并在 `useRequest` 中自动管理它们，而无需自己维护。
 
-1. 支持 `loading`, 并支持设置 `loading` 延迟时间(默认300ms)
+1. 支持 `loading`, 并支持设置 `loading` 延迟时间(默认 300ms)
 2. 支持响应式的请求参数： 自动响应外部参数的变化并重新发起请求
 3. 实现防抖机制，避免过多不必要的 API 请求
 4. 支持取消请求
@@ -12,14 +12,14 @@
 ```javascript {.line-numbers}
 // 默认的配置项
 const defaultConfig = {
-	loadingDelay: 300, // loading 延迟时间
-	loadingKeep: 300, // loading 保持时间
-	immediate: false, // 是否立即发起请求
-	initialData: [], // data 数据格式
-	params: {}, // 请求初始化参数
-	isReactive: true, // 是否开启响应式参数
-	onBefore: (resolve) => resolve(), // 请求发送前的钩子函数
-	onSuccess: (res) => res, // 请求成功后的钩子函数
+  loadingDelay: 300, // loading 延迟时间
+  loadingKeep: 300, // loading 保持时间
+  immediate: false, // 是否立即发起请求
+  initialData: [], // data 数据格式
+  params: {}, // 请求初始化参数
+  isReactive: false, // 是否开启响应式参数
+  onBefore: (resolve) => resolve(), // 请求发送前的钩子函数
+  onSuccess: (res) => res, // 请求成功后的钩子函数
 }
 ```
 
@@ -29,12 +29,12 @@ const defaultConfig = {
 ```js {.line-numbers}
 // data , loading 均是响应式参数
 const { data, loading } = useRequest(promiseApi, {
-	immediate: true, // 立即执行请求，默认是false
-	isReactive: false, // 是否开启响应式参数， 默认是开启响应式参数
-	params: {
-		pageSize: 10,
-		pageNum: 1,
-	},
+  immediate: true, // 立即执行请求，默认是false
+  isReactive: true, // 是否开启响应式参数， 默认不开启
+  params: {
+    pageSize: 10,
+    pageNum: 1,
+  },
 })
 ```
 
@@ -43,17 +43,17 @@ const { data, loading } = useRequest(promiseApi, {
 ```js {.line-numbers}
 // data , loading 均是响应式参数
 const { data, loading } = useRequest(promiseApi, {
-	immediate: true, // 立即执行请求
-	params: {
-		pageSize: 10,
-		pageNum: 1,
-	},
-	onSuccess(res) {
-		// 需要返回处理完成的数据
-		return res.map((item) => {
-			return item
-		})
-	},
+  immediate: true, // 立即执行请求
+  params: {
+    pageSize: 10,
+    pageNum: 1,
+  },
+  onSuccess(res) {
+    // 需要返回处理完成的数据
+    return res.map((item) => {
+      return item
+    })
+  },
 })
 ```
 
@@ -62,15 +62,15 @@ const { data, loading } = useRequest(promiseApi, {
 ```js {.line-numbers}
 // data , loading 均是响应式参数
 const { data, loading } = useRequest(promiseApi, {
-	immediate: true, // 立即执行请求
-	params: {
-		pageSize: 10,
-		pageNum: 1,
-	},
-	onBefore(resovle, params) {
-		// do something
-		resovle()
-	},
+  immediate: true, // 立即执行请求
+  params: {
+    pageSize: 10,
+    pageNum: 1,
+  },
+  onBefore(resovle, params) {
+    // do something
+    resovle()
+  },
 })
 ```
 
@@ -79,52 +79,52 @@ const { data, loading } = useRequest(promiseApi, {
 
 ```js {.line-numbers}
 const { data, loading, run } = useRequest(promiseApi, {
-	params: {
-		pageSize: 10,
-		pageNum: 1,
-	},
+  params: {
+    pageSize: 10,
+    pageNum: 1,
+  },
 })
 // 在需要的时候执行
 const handleClick = () => {
-	run({
-		params: {
-			id: '123',
-		},
-	})
+  run({
+    params: {
+      id: '123',
+    },
+  })
 }
 
 onMounted(() => {
-	run()
-		.then((res) => {
-			console.log('res: ', res)
-		})
-		.catch((err) => {
-			console.log('err: ', err)
-		})
+  run()
+    .then((res) => {
+      console.log('res: ', res)
+    })
+    .catch((err) => {
+      console.log('err: ', err)
+    })
 })
 ```
 
-4、取消请求，使用 `new AbortController` 实现（支持axios和fetch），并在组件卸载时自动取消所有未完成的请求，也支持手动取消; 注意：`axios CancelToken` 从从 v0.22.0 开始已被弃用
+4、取消请求，使用 `new AbortController` 实现（支持 axios 和 fetch），并在组件卸载时自动取消所有未完成的请求，也支持手动取消; 注意：`axios CancelToken`  从从  v0.22.0  开始已被弃用
 
 ```js {.line-numbers}
 // API
 // useReuqest中会处理取消请求的逻辑，并将signal作为第二个参数传入API中
 const queryListApi = (data, signal) => {
-	return axios.post('/fox/test', data, {
-		...signal,
-	})
+  return axios.post('/fox/test', data, {
+    ...signal,
+  })
 }
 
 // 暴露手动取消请求钩子 onAbort
 const { data, run, onAbort } = useRequest(queryListApi, {
-	params: {
-		pageSize: 10,
-		pageNum: 1,
-	},
+  params: {
+    pageSize: 10,
+    pageNum: 1,
+  },
 })
 // 在需要的时候执行
 const handleClick = () => {
-	run()
-	onAbort()
+  run()
+  onAbort()
 }
 ```
