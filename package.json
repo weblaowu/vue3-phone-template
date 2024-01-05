@@ -51,7 +51,7 @@
     "husky": "^8.0.3",
     "lint-staged": "^15.0.1",
     "path": "^0.12.7",
-    "postcss-px-to-viewport": "^1.1.1",
+    "postcss-px-to-viewport-8-plugin": "^1.2.3",
     "prettier": "^2.8.8",
     "sass": "^1.62.1",
     "scss": "^0.2.4",

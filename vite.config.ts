@@ -2,7 +2,7 @@ import path from 'path'
 import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
 import { VantResolver } from 'unplugin-vue-components/resolvers'
-import postcsspxtoviewport from 'postcss-px-to-viewport'
+import postcsspxtoviewport8plugin from 'postcss-px-to-viewport-8-plugin'
 import { defineConfig, loadEnv } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import { createSvgIconsPlugin } from 'vite-plugin-svg-icons'
@@ -73,12 +73,14 @@ export default defineConfig(({ mode }) => {
       postcss: {
         plugins: [
           // px => vw
-          postcsspxtoviewport({
+          postcsspxtoviewport8plugin({
             unitToConvert: 'px',
-            viewportWidth: 750, // 视窗的宽度, 根据设计稿的尺寸
+            viewportWidth: (file) => (file.includes('van') ? 375 : 750),
             unitPrecision: 3, //指定`px`转换为视窗单位值的小数位数（很多时候无法整除）
             propList: ['*'],
-            exclude: [/node_modules/],
+            exclude: [],
+            viewportUnit: 'vw',
+            fontViewportUnit: 'vw',
             selectorBlackList: ['ignore_'], //指定不转换为视窗单位的类,
           }),
         ],
