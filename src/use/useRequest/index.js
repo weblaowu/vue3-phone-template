@@ -43,7 +43,7 @@ const useRequest = (promiseData, options = {}) => {
   // 创建 AbortController 实例
   let abortController = new AbortController()
   // 执行请求方法
-  const run = async ({ params, ...runOption } = {}) => {
+  const run = async (params, runOption = {}) => {
     // 获取当前时间
     const startDate = new Date().getTime()
     // 每次请求前重置 AbortController

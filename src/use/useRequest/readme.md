@@ -86,11 +86,7 @@ const { data, loading, run } = useRequest(promiseApi, {
 })
 // 在需要的时候执行
 const handleClick = () => {
-  run({
-    params: {
-      id: '123',
-    },
-  })
+  run({id: '123'})
 }
 
 onMounted(() => {
