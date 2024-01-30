@@ -5,23 +5,22 @@
  * @method remove 移除永久缓存
  * @method clear 移除全部永久缓存
  */
-type Str = string | number | object
 export const Local = {
   // 设置永久缓存
-  set(key: string, val: Str): void {
+  set(key, val) {
     window.localStorage.setItem(key, JSON.stringify(val))
   },
   // 获取永久缓存
-  get(key: string) {
-    const json: any = window.localStorage.getItem(key)
+  get(key) {
+    const json = window.localStorage.getItem(key)
     return JSON.parse(json)
   },
   // 移除永久缓存
-  remove(key: string): void {
+  remove(key) {
     window.localStorage.removeItem(key)
   },
   // 移除全部永久缓存
-  clear(): void {
+  clear() {
     window.localStorage.clear()
   },
 }
@@ -35,12 +34,12 @@ export const Local = {
  */
 export const Session = {
   // 设置临时缓存
-  set(key: string, val: object) {
+  set(key, val) {
     window.sessionStorage.setItem(key, JSON.stringify(val))
   },
   // 获取临时缓存
-  get(key: string) {
-    const res: string = window.sessionStorage.getItem(key) || ''
+  get(key) {
+    const res = window.sessionStorage.getItem(key) || ''
     try {
       return JSON.parse(res)
     } catch (err) {
@@ -48,7 +47,7 @@ export const Session = {
     }
   },
   // 移除临时缓存
-  remove(key: string) {
+  remove(key) {
     window.sessionStorage.removeItem(key)
   },
   // 移除全部临时缓存

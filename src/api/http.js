@@ -1,5 +1,4 @@
 import axios from 'axios'
-import { showToast } from 'vant'
 
 // 创建axios实例
 const instance = axios.create({
@@ -30,8 +29,9 @@ instance.interceptors.response.use(
   (response) => {
     const { data, status } = response
     if (status === 200) {
-      const { code, message } = data
-      return code === 200 ? data : Promise.inject({ code, message })
+      return data
+    } else {
+      return Promise.reject(data)
     }
   },
   (error) => {

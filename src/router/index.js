@@ -13,7 +13,7 @@ const router = createRouter({
       path: '/promission',
       component: () => import('@/components/NoPromission.vue'),
     },
-    /* 正式项目请去除改路由 */
+    /* 正式环境删除该路由 */
     {
       path: '/demo',
       component: () => import('@/views/demo.vue'),

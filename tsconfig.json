@@ -14,6 +14,7 @@
     "skipLibCheck": true,
     "baseUrl": "./",
     "allowJs": true,
+    // "checkJs": true,
     "paths": {
       "@": ["src/*"],
       "@/*": ["src/*"],
@@ -31,9 +32,6 @@
     "src/**/*.d.ts",
     "src/**/*.tsx",
     "src/**/*.vue",
-    "./auto-imports.d.ts",
-    "src/use/useTools.js",
-    "src/utils/wxSdk.js",
-    "src/utils/wechatAuth.js"
+    "./auto-imports.d.ts"
   ]
 }

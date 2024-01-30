@@ -1,4 +1,4 @@
-import { getUnionidApi } from '../api/index'
+import { getUserIdApi } from '../api/index'
 import { showFailToast } from 'vant'
 import { Session } from './storage'
 // 进入鉴权
@@ -6,17 +6,14 @@ export const authorizeAndTrack = (code, next) => {
   if (!code) {
     goToWxAuthorizeUrl()
   } else {
-    // 没code，说明是从公众号进来的，需要先去微信鉴权获取code
-    getUnionidApi({ code }).then((res) => {
+    // 用户鉴权
+    getUserIdApi({ code }).then((res) => {
       const { code: status, message, data } = res
-      // 获取用户信息
       if ([-1, -2].includes(status)) {
         showFailToast(message)
         return next('/promission')
       }
-      const { openid } = data
-      if (!openid) return showFailToast('没有获取到用户信息')
-      cacheId(openid)
+      cacheInfo(data)
       next()
     })
   }
@@ -31,7 +28,6 @@ const goToWxAuthorizeUrl = () => {
   )}&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect`
 }
 
-// openid
-function cacheId(openid) {
-  Session.set('openid', openid)
+function cacheInfo(data) {
+  Session.set('user_info', data)
 }

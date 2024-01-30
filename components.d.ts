@@ -18,8 +18,6 @@ declare module '@vue/runtime-core' {
     VanCellGroup: typeof import('vant/es')['CellGroup']
     VanField: typeof import('vant/es')['Field']
     VanForm: typeof import('vant/es')['Form']
-    VanLoading: typeof import('vant/es')['Loading']
-    VanOverlay: typeof import('vant/es')['Overlay']
     VanSkeleton: typeof import('vant/es')['Skeleton']
     WxOpenLaunchWeappWrap: typeof import('./src/components/WxOpenLaunchWeappWrap.vue')['default']
   }

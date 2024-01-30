@@ -62,12 +62,7 @@ const pageState = ref({
   pageNum: 1,
 })
 
-const { run, data, onAbort } = useRequest(queryListApi, {
-  params: pageState,
-  onSuccess(res) {
-    return res.list
-  },
-})
+const { run, data, onAbort } = useRequest(queryListApi)
 
 const handleSubmit = () => {
   run()

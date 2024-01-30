@@ -8,7 +8,7 @@ import vue from '@vitejs/plugin-vue'
 import { createSvgIconsPlugin } from 'vite-plugin-svg-icons'
 import { viteMockServe } from 'vite-plugin-mock'
 
-function resolve(dir: string) {
+function resolve(dir) {
   return path.join(__dirname, dir)
 }
 
@@ -27,7 +27,7 @@ export default defineConfig(({ mode }) => {
         '/api': {
           target: 'http://127.0.0.1:4523/m1/3695511-0-default/',
           changeOrigin: true,
-          rewrite: (path: string) => path.replace(/^\/api/, ''),
+          rewrite: (path) => path.replace(/^\/api/, ''),
         },
       },
     },
@@ -75,8 +75,8 @@ export default defineConfig(({ mode }) => {
           // px => vw
           postcsspxtoviewport8plugin({
             unitToConvert: 'px',
-            viewportWidth: (file) => (file.includes('van') ? 375 : 750),
-            unitPrecision: 3, //指定`px`转换为视窗单位值的小数位数（很多时候无法整除）
+            viewportWidth: (file) => (file.includes('vant') ? 375 : 750),
+            unitPrecision: 2, //指定`px`转换为视窗单位值的小数位数（很多时候无法整除）
             propList: ['*'],
             exclude: [],
             viewportUnit: 'vw',

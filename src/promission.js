@@ -12,10 +12,13 @@ NProgress.configure({
 router.beforeEach((to, _, next) => {
   NProgress.start()
   /* 开发时手动删除这一行 */
-  if (import.meta.env.MODE === 'development') return next()
+  // if (import.meta.env.MODE === 'development') return next()
   // 已通过鉴权或无权限路由放行
-  if (Session.get('openid') || to.path === '/promission') return next()
-  const code = import.meta.env.MODE === 'production' ? to.query.code : '123'
+  if (Session.get('user_info').userId || to.path === '/promission')
+    return next()
+  const code = ['production', 'test'].includes(import.meta.env.MODE)
+    ? to.query.code
+    : to.query.code || '123'
   // 鉴权
   authorizeAndTrack(code, next)
 })

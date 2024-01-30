@@ -2,7 +2,7 @@ import lottie from 'lottie-web'
 /**
  * Lottie 动画
  * @param {document} elem DOM对象
- * @param {json} animationData json数据
+ * @param {string} animationData json数据
  * @param {object} opt 额外选项
  * @returns
  */

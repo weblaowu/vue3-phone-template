@@ -14,17 +14,19 @@ const defaultConfig = {
   onBefore: (resolve) => resolve(), // 请求发送前的钩子函数
   onSuccess: (res) => res, // 请求成功后的钩子函数
 }
-
+/**
+ * @type { loadingDelay, immediate, initialData, params, isReactive,onBefore, onSuccess  }
+ */
 /**
  * request usehook 封装
- * @param {function} promiseData api请求，返回promise对象
- * @param {object} options 请求的选项
+ * @param {()=> Promise} promiseData api请求，返回promise对象
+ * @param {Object} [options] 请求的选项
  * @param {function} options.onSuccess 请求成功的回调方法
  * @param {function} options.onBefore 请求发送前的钩子函数
- * @param {object} options.params 请求的参数
- * @param {object} options.isReactive 是否开启自动响应外部参数的变化
- * @param {object} options.config 配置项，覆盖默认配置 defaultConfig
- * @returns {} data loading error run
+ * @param {Object} options.params 请求的参数
+ * @param {Object} options.isReactive 是否开启自动响应外部参数的变化
+ * @param {Object} options.config 配置项，覆盖默认配置 defaultConfig
+ * @returns { } data loading error run onAbort
  */
 const useRequest = (promiseData, options = {}) => {
   if (!isFunction(promiseData)) {
@@ -113,7 +115,7 @@ const useRequest = (promiseData, options = {}) => {
   })
   return {
     data,
-    run: debouncedRun,
+    run,
     error,
     loading,
     onAbort,
